@@ -4,11 +4,9 @@ from rest_framework.views import APIView
 
 from towns.models import Town
 from towns.serializers.aggregation_serializer import AggregationSerializer
-from towns.serializers.town_serializer import TownSerializer
 
 
 class TownAggregation(APIView):
-    serializer_class = TownSerializer
     filter_param = 'region_code'
     agg_param = 'population'
 
