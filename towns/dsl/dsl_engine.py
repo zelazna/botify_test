@@ -14,7 +14,7 @@ class DSLEngine:
         else:
             self.parsers = parsers
 
-    def query(self, **kwargs):
+    def execute(self, **kwargs):
         result = self._format(kwargs)
         if isinstance(result, Exception):
             return result
