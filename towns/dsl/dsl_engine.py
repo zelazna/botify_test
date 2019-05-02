@@ -16,7 +16,6 @@ class DSLEngine:
 
     def execute(self, **kwargs):
         result = self._format(kwargs)
-        print(result)
         if isinstance(result, Exception):
             return result
         with connection.cursor() as cursor:
