@@ -1,6 +1,6 @@
 from voluptuous import Schema, Required, Any
 
-from towns.dsl.parsers.filters_parser import PREDICATE_MAP
+from towns.dsl.parsers.constants import PREDICATE_MAP
 
 ALLOWED_FIELDS = [
     'name',

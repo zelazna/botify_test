@@ -16,6 +16,7 @@ class DSLEngine:
 
     def execute(self, **kwargs):
         result = self._format(kwargs)
+        print(result)
         if isinstance(result, Exception):
             return result
         with connection.cursor() as cursor:
@@ -31,5 +32,5 @@ class DSLEngine:
         except MultipleInvalid as e:
             return e
 
-        parsed_dict = {name: parser.parse(kwargs[name]) for name, parser in self.parsers.items()}
+        parsed_dict = {name: parser.parse(kwargs[name]).dump() for name, parser in self.parsers.items()}
         return self.template.format(**parsed_dict)
