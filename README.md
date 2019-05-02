@@ -13,3 +13,18 @@ run the run script:
 ```bash 
 scripts/run.sh
 ```
+
+# Run with docker
+
+## build image
+
+```bash
+docker build -t botify_test . 
+```
+
+## run it
+
+```bash
+docker run botify_test -p 8080:8080
+```
+
