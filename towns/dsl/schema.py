@@ -1,38 +1,21 @@
-from voluptuous import Schema, Required, Any
+from voluptuous import Schema, Required, Any, Optional, Exclusive, All, ALLOW_EXTRA
 
-from towns.dsl.parsers.constants import PREDICATE_MAP
-
-ALLOWED_FIELDS = [
-    'name',
-    'town_code',
-    'departement_code',
-    'population'
-]
-
-
-def filter_schema_r(v):
-    return filter_schema(v)
-
+from towns.dsl.constants import PREDICATE_MAP, ALLOWED_FIELDS
 
 filter_schema = Schema({
-    Required('fields'): Any(*ALLOWED_FIELDS),
-    Required('value'): Any(int, str),
-    'predicate': Any(*list(PREDICATE_MAP.keys()))
-})
-
-conditional_filter_schema = Schema({
-    Required('field'): Any(*ALLOWED_FIELDS),
-    Required('value'): Any(int, str),
+    Optional('fields'): Any(*ALLOWED_FIELDS),
+    Optional('field'): Any(*ALLOWED_FIELDS),
+    Optional('value'): Any(int, str),
     'predicate': Any(*list(PREDICATE_MAP.keys())),
-    'and': filter_schema_r,
-    'or': filter_schema_r
-})
+}, extra=ALLOW_EXTRA)
+
+and_schema = Schema({Required('and'): [filter_schema]})
+or_schema = Schema({Required('or'): [filter_schema]})
 
 schema = Schema({
     Required('fields'): ALLOWED_FIELDS,
     "filters": Any(
         filter_schema,
-        Schema({"and": [conditional_filter_schema]}),
-        Schema({"or": [conditional_filter_schema]})
+        Any(and_schema, or_schema)
     )
 })

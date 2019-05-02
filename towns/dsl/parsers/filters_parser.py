@@ -1,4 +1,4 @@
-from towns.dsl.parsers.constants import PREDICATE_MAP, WHERE, FILTERS
+from towns.dsl.constants import PREDICATE_MAP, WHERE, FILTERS
 
 
 class FiltersParser:
@@ -6,8 +6,10 @@ class FiltersParser:
         self.clauses = None
         self.cond = None
 
-    def parse(self, filters):
-        self.clauses = []
+    def parse(self, filters, clauses=None):
+        if clauses is None:
+            self.clauses = []
+
         if not filters:
             return ""
 
@@ -22,8 +24,11 @@ class FiltersParser:
 
             if cond in FILTERS:
                 for idx, f in enumerate(filters[cond]):
-                    self.clauses.append(WHERE) if idx == 0 else self.clauses.append(cond.upper())
-                    self.parse_clause(f)
+                    if list(f.keys())[0] in FILTERS:
+                        self.parse(f, self.clauses)
+                    else:
+                        self.clauses.append(WHERE) if idx == 0 and WHERE not in self.clauses else self.clauses.append(cond.upper())
+                        self.parse_clause(f)
 
         return self
 
