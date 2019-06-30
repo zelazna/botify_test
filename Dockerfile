@@ -4,5 +4,4 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /code
 COPY . /code/
 RUN scripts/install.sh
-COPY . /code/
 CMD [ "python", "manage.py", "runserver" ,"0.0.0.0:8080" ]
